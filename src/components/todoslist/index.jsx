@@ -1,11 +1,12 @@
-// TodoList.js
 import React, { useState, useEffect } from "react";
 import TodoItem from "./TodoItem";
 import AddTodoForm from "./AddTodoForm";
 import { useTheme } from "../../context/ThemeContext";
+import "./todo.css";
 
-const index = () => {
+const Index = () => {
   const [todos, setTodos] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
@@ -13,11 +14,11 @@ const index = () => {
     if (storedTodos) {
       setTodos(storedTodos);
     }
-  }, []); // Run once on component mount to load todos from local storage
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]); // Run whenever todos state changes to save todos to local storage
+  }, [todos]);
 
   const addTodo = (text) => {
     setTodos([...todos, { text, completed: false }]);
@@ -34,16 +35,36 @@ const index = () => {
     setTodos(newTodos);
   };
 
+  const filteredTodos = todos.filter(todo =>
+    todo.text.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <div
-      className={`container-fuild ${theme === "dark" ? "bg-dark text-white" : ""}`}>
-      <h1>Todo List React </h1>
-      <button className="btn btn-sm btn-secondary m-2" onClick={toggleTheme}>
-        Change Theme
-      </button>
+    <div className={` main-cnt container-fuild ${theme === "dark" ? "bg-dark text-white" : ""}`}>
+      <h2 className="m-2">Todo List React</h2>
+      <input
+        type="checkbox"
+        id="themeToggle"
+        className="w-75 theme-toggle-checkbox visually-hidden"
+        checked={theme === "dark"}
+        onChange={toggleTheme}
+      />
+      <label htmlFor="themeToggle" className="theme-toggle-label m-2">
+        <span className="slider" />
+      </label>
+      <p className="m-2 mt-0">Change Theme</p>
+
       <AddTodoForm addTodo={addTodo} />
+      <input
+        
+        type="text"
+        className={`form-control mb-3 m-2 w-75 ${theme === "dark" ? "bg-dark text-white" : "bg-white text-dark"} ` }
+        placeholder="Search todos"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
       <ul className="list-group">
-        {todos.map((todo, index) => (
+        {filteredTodos.map((todo, index) => (
           <TodoItem
             key={index}
             index={index}
@@ -53,8 +74,11 @@ const index = () => {
           />
         ))}
       </ul>
+      <p className="text-center m-2 text-primary">
+        Todo app by / Muhammad Sumair Ali{" "}
+      </p>
     </div>
   );
 };
 
-export default index;
+export default Index;

@@ -1,0 +1,59 @@
+/* CSS for the slider toggle */
+.theme-toggle-checkbox {
+  position: absolute;
+  left: -9999px;
+}
+
+.theme-toggle-label {
+  border:2px solid #6a62d5;
+  border-radius: 8px ;
+  display: inline-block;
+  width: 45px;
+  height: 25px;
+  position: relative;
+  cursor: pointer;
+}
+
+.theme-toggle-label .slider {
+  position: absolute;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #ccc;
+  transition: background-color 0.3s;
+}
+
+.theme-toggle-label .slider::before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  border-radius: 50%;
+  background-color: white;
+  transition: transform 0.3s;
+}
+
+/* Override Bootstrap styles for checkbox */
+.theme-toggle-checkbox:checked + .theme-toggle-label .slider {
+  background-color: #007bff;
+}
+
+.theme-toggle-checkbox:checked + .theme-toggle-label .slider::before {
+  transform: translateX(20px);
+}
+
+/* Ensure proper z-index to avoid being overridden by Bootstrap */
+.theme-toggle-checkbox:checked + .theme-toggle-label .slider,
+.theme-toggle-checkbox:not(:checked) + .theme-toggle-label .slider {
+  z-index: 1;
+}
+.check{
+  padding:5px;
+  border-radius:8px;
+}
+.main-cnt{
+  height:100% !important;
+}
